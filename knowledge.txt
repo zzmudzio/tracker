@@ -1,0 +1,13 @@
+=== MAVEN === 
+
+mvn clean package - removes current content of target/ directory and put a new artifact and other files as the result of build process
+mvn clean install -> mvn clean package + install artifact as dependency in local .m2 repository, so it can be imported and used
+
+=== /MAVEN === 
+
+=== Testing === 
+
+@MockitoSpyBean - it can be useful if we want only partially mock given dependency. We can spy on that dependency, to check e.g.
+whether given method has been called etc. 
+
+=== /Testing === 
