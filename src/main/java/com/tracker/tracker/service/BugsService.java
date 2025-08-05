@@ -46,6 +46,16 @@ public class BugsService {
                 .toList();
     }
 
+    public List<BugResponseDTO> getAllNotDoneBugs() {
+        return bugsRepository
+                .findAll()
+                .stream()
+                .filter(bug -> bug.getStatus() != null && bug.getStatus() != BugStatus.DONE
+                )
+                .map(bugMapper::toBugResponse)
+                .toList();
+    }
+
     public BugResponseDTO addBug(BugDTO bugDTO) {
         Bug bug = bugMapper.toBugEntity(bugDTO);
         bug.setCreatedAt(LocalDateTime.now());

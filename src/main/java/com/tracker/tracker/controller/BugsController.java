@@ -27,6 +27,11 @@ public class BugsController {
         return bugsService.getAllBugs();
     }
 
+    @GetMapping("/active")
+    public List<BugResponseDTO> getAllNotDoneBugs() {
+        return bugsService.getAllNotDoneBugs();
+    }
+
     @GetMapping("/ids")
     public List<BugResponseDTO> getBugsWithGivenIds(@RequestParam(required = false) Set<Integer> id) {
         return bugsService.getBugsWithGivenIds(id);
@@ -62,6 +67,5 @@ public class BugsController {
         bugsService.deleteBug(bugId);
         return ResponseEntity.noContent().build();
     }
-
 
 }

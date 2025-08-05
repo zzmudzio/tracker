@@ -3,9 +3,7 @@ package com.tracker.tracker.entity;
 import com.tracker.tracker.enums.BugStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "bugs")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 public class Bug {
 
     @Id
