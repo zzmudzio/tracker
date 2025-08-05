@@ -10,4 +10,25 @@ mvn clean install -> mvn clean package + install artifact as dependency in local
 @MockitoSpyBean - it can be useful if we want only partially mock given dependency. We can spy on that dependency, to check e.g.
 whether given method has been called etc. 
 
+@MockitoBean -> new and faster way of mocking beans, for example when we test service layer and want to mock repository. 
+
 === /Testing === 
+
+=== Profiles === 
+
+We can have for example application.properties, application-dev.properties, application-prod.properties 
+
+It is a convenient way to for example connect to given postgresql db only when being on production, or to 
+use h2 in memory database while developing. 
+
+It can be set for example in Intellij in Run > Edit configurations by adding VM option: -Dspring.profiles.active=dev
+
+In above example "dev" profile will be the active one. 
+
+@Profile - it says that given bean should be active only while using given profile. 
+
+@ActiveProfiles - activates a specific profile when running a test, e. g. @ActiveProfiles("dev") while running a test will do the same thing
+as -Dspring.profiles.active=dev
+
+=== /Profiles === 
+
