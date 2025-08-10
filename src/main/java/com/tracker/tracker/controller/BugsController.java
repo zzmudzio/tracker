@@ -57,6 +57,11 @@ public class BugsController {
         return ResponseEntity.status(200).body(bugsService.updateBugStatus(bugId, newStatus));
     }
 
+    @PatchMapping("/{bugId}/assignee")
+    public ResponseEntity<BugResponseDTO> assignToUser(@Positive @PathVariable Integer bugId, @RequestBody @Positive Integer userId) {
+        return ResponseEntity.status(201).body(bugsService.assignBug(bugId, userId));
+    }
+
     @PutMapping("/{bugId}")
     public ResponseEntity<BugResponseDTO> updateBug(@PathVariable @Positive Integer bugId, @Valid @RequestBody BugDTO bugDTO) {
         return ResponseEntity.ok().body(bugsService.updateBug(bugId, bugDTO));

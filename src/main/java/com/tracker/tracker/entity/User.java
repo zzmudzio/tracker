@@ -1,6 +1,7 @@
 package com.tracker.tracker.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tracker.tracker.enums.Roles;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +20,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonIgnore
     private String login;
+    @JsonIgnore
     private String password;
+    private Roles role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "reportedBy")

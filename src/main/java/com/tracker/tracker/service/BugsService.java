@@ -10,6 +10,7 @@ import com.tracker.tracker.exceptions.ResourceNotFoundException;
 import com.tracker.tracker.repository.BugsRepository;
 import com.tracker.tracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BugsService {
 
     private final BugsRepository bugsRepository;
@@ -101,6 +103,15 @@ public class BugsService {
         }
         Bug newBug = bugsRepository.save(bug);
         return bugMapper.toBugResponse(newBug);
+    }
+
+    public BugResponseDTO assignBug(Integer bugId, Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with given id not found!"));
+        Bug bug = bugsRepository.findById(bugId).orElseThrow(() -> new ResourceNotFoundException("Bug with given id not found!"));
+        bug.setAssignedTo(user);
+        bugsRepository.save(bug);
+        log.info("Bug with id {} assigned to user {}", bugId, user);
+        return bugMapper.toBugResponse(bug);
     }
 
     public void deleteBug(Integer bugId) {
