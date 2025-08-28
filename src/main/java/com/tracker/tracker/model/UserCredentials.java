@@ -1,6 +1,6 @@
 package com.tracker.tracker.model;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserCredentials {
 
-    @NotNull
+    @NotBlank
     private String login;
-    @NotNull
+    @NotBlank
     private String password;
 }

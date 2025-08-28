@@ -12,6 +12,7 @@ import com.tracker.tracker.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -52,25 +53,34 @@ public class BugsService {
         return bugsRepository
                 .findAll()
                 .stream()
-                .filter(bug -> bug.getStatus() != null && bug.getStatus() != BugStatus.DONE
-                )
+                .filter(bug -> bug.getStatus() != null && bug.getStatus() != BugStatus.DONE)
                 .map(bugMapper::toBugResponse)
                 .toList();
     }
 
-    public BugResponseDTO addBug(BugDTO bugDTO) {
-        Bug bug = bugMapper.toBugEntity(bugDTO);
-        bug.setCreatedAt(LocalDateTime.now());
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+    public Bug getBugEntity(BugDTO bugDTO) {
+        User assignedUser = null;
+        User automatic = userRepository.findUserByLogin("AUTOMATIC")
+                .orElseThrow(() -> new UsernameNotFoundException("automatic user not found!"));
+
         if (bugDTO.getAssignedToUserId() != null) {
-            User assignedUser = userRepository
-                    .findById(bugDTO.getAssignedToUserId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User with given id not found!"));
-            bug.setAssignedTo(assignedUser);
+            assignedUser = userRepository.findById(bugDTO.getAssignedToUserId()).orElse(null);
         }
-        User loggedUser = userRepository.findUserByLogin(userName).orElseThrow(() -> new ResourceNotFoundException("User with given id is not logged in!"));
+        Bug bug = bugMapper.toBugEntity(bugDTO, assignedUser);
+        bug.setCreatedAt(LocalDateTime.now());
+        User loggedUser = userRepository.findUserByLogin(getUserNameFromSecurityContext()).orElse(automatic);
         bug.setReportedBy(loggedUser);
-        Bug savedBug = bugsRepository.save(bug);
+
+        return bug;
+    }
+
+    private String getUserNameFromSecurityContext() {
+        return SecurityContextHolder.getContext().getAuthentication() == null ?
+                "unknown-user" : SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
+    public BugResponseDTO addBug(BugDTO bugDTO) {
+        Bug savedBug = bugsRepository.save(getBugEntity(bugDTO));
         return bugMapper.toBugResponse(savedBug);
     }
 

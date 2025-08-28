@@ -24,6 +24,7 @@ public class User {
     private String login;
     @JsonIgnore
     private String password;
+    @Enumerated(EnumType.STRING)
     private Roles role;
 
     @JsonIgnore

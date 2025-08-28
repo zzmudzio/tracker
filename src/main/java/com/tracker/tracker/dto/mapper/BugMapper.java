@@ -4,7 +4,6 @@ import com.tracker.tracker.dto.BugDTO;
 import com.tracker.tracker.dto.BugResponseDTO;
 import com.tracker.tracker.entity.Bug;
 import com.tracker.tracker.entity.User;
-import com.tracker.tracker.enums.BugStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -12,11 +11,13 @@ import java.util.Optional;
 @Component
 public class BugMapper {
 
-    public Bug toBugEntity(BugDTO bugDTO) {
+    public Bug toBugEntity(BugDTO bugDTO, User user) {
 
         Bug bug = new Bug();
         bug.setDescription(bugDTO.getDescription());
-        bug.setStatus(bugDTO.getStatus() != null ? bugDTO.getStatus() : BugStatus.OPEN);
+        bug.setStatus(bugDTO.getStatus());
+        bug.setAssignedTo(user);
+
         return bug;
     }
 
