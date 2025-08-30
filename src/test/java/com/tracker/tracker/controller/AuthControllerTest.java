@@ -2,6 +2,7 @@ package com.tracker.tracker.controller;
 
 import com.tracker.tracker.entity.User;
 import com.tracker.tracker.security.SecurityConfig;
+import com.tracker.tracker.service.CustomUserDetailsService;
 import com.tracker.tracker.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +19,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(AuthController.class)
+@WebMvcTest(controllers = AuthController.class, excludeAutoConfiguration = {
+        org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration.class
+})
 @Import(SecurityConfig.class)
 public class AuthControllerTest {
 
@@ -28,6 +31,8 @@ public class AuthControllerTest {
     @MockitoBean
     private UserService userService;
 
+    @MockitoBean
+    private CustomUserDetailsService customUserDetailsService;
 
     @Test
     public void should_return401_when_invalidCredentialsArePassed() throws Exception {
