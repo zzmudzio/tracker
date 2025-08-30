@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build app create image and push to docker hub:
+  build_app_create_image_and_push_to_docker_hub:
 
     runs-on: ubuntu-latest
 
