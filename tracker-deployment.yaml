@@ -16,7 +16,25 @@ spec:
     spec:
       containers:
         - name: tracker
-          image: zzmudzio/tracker:latest      
+          image: zzmudzio/tracker:latest
+          env:
+            - name: DB_LOGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: POSTGRES_USER
+            - name: SPRING_ACTIVE_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: SPRING_ACTIVE_PROFILE
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: DB_URL
+              value: "jdbc:postgresql://$(DB_LOGIN):$(DB_PASSWORD)@postgres-service:5432/trackerdb"
           ports:
             - containerPort: 8080
       imagePullSecrets:
