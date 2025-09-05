@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-deployment
+  labels:
+    app: tracker-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracker-backend
+  template:
+    metadata:
+      labels:
+        app: tracker-backend
+    spec:
+      containers:
+        - name: tracker
+          image: zzmudzio/tracker:latest      
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: myregistrykey       
