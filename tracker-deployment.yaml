@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tracker-deployment
+  labels:
+    app: tracker-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tracker-backend
+  template:
+    metadata:
+      labels:
+        app: tracker-backend
+    spec:
+      containers:
+        - name: tracker
+          image: zzmudzio/tracker:latest
+          env:
+            - name: DB_LOGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: POSTGRES_USER
+            - name: SPRING_ACTIVE_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: SPRING_ACTIVE_PROFILE
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: DB_URL
+              value: "jdbc:postgresql://$(DB_LOGIN):$(DB_PASSWORD)@postgres-service:5432/trackerdb"
+          ports:
+            - containerPort: 8080
+      imagePullSecrets:
+        - name: myregistrykey       
