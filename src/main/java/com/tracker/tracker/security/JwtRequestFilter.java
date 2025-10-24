@@ -25,7 +25,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if ("/auth/login".equals(path)) {
+        if ("/auth/login".equals(path) || path.startsWith("/h2-console")) {
+            log.info("skipping filtering..");
             filterChain.doFilter(request, response);
             return;
         }
@@ -40,7 +41,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null
                         , userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                log.info("OK!");
             } catch (Exception e) {
+                log.info("unauthorized..");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }

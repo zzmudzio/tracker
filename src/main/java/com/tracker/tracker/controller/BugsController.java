@@ -7,6 +7,7 @@ import com.tracker.tracker.service.BugsService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,14 @@ import java.util.Set;
 @RequestMapping("/api/v1/bugs")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class BugsController {
 
     private final BugsService bugsService;
 
     @GetMapping
     public List<BugResponseDTO> getAllBugs() {
+        log.info("handling a request for all bugs..");
         return bugsService.getAllBugs();
     }
 

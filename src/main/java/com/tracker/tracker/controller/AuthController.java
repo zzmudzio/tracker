@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @RestController
@@ -29,10 +30,13 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserCredentials userCredentials) {
+        log.info("Call for /login endpoint...");
         Optional<User> user = userService.findUserByLogin(userCredentials.getLogin());
         if (user.isPresent() && user.get().getPassword().equals(userCredentials.getPassword())) {
             String token = JwtUtil.generateToken(userCredentials.getLogin());
-            return ResponseEntity.ok(new AuthResponse(token, "Bearer"));
+            ZonedDateTime expirationDate = JwtUtil.getZonedExpirationDate(JwtUtil.getExpirationDate(token));
+            return ResponseEntity.ok(new AuthResponse(token, "Bearer",
+                    expirationDate.toInstant().toEpochMilli(), expirationDate));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials!");
         }

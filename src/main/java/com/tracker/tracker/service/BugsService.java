@@ -30,6 +30,7 @@ public class BugsService {
     private final UserRepository userRepository;
 
     public List<BugResponseDTO> getAllBugs() {
+        log.info("service responsible for getting all bugs at work");
         return
                 bugsRepository
                         .findAll()
