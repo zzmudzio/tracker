@@ -41,7 +41,6 @@ public class JwtUtil {
 
     public static ZonedDateTime getZonedExpirationDate(Date expirationDate) {
         Instant instant = expirationDate.toInstant();
-
         return instant.atZone(ZoneId.of("Europe/Warsaw"));
     }
 
