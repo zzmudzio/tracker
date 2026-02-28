@@ -1,6 +1,7 @@
 package com.tracker.tracker.configuration;
 
 import com.tracker.tracker.dto.BugDTO;
+import com.tracker.tracker.enums.BugStatus;
 import com.tracker.tracker.repository.BugsRepository;
 import com.tracker.tracker.service.BugsService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,8 @@ public class DevDataInitializer {
             Stream.of(
                             BugDTO.builder().description("Test desc 1").assignedToUserId(1).build(),
                             BugDTO.builder().description("Test desc 2").build(),
-                            BugDTO.builder().description("Test desc 3").assignedToUserId(2).build()
+                            BugDTO.builder().description("Test desc 3").assignedToUserId(2).build(),
+                            BugDTO.builder().description("Test of repaired bug").status(BugStatus.DONE).build()
                     )
                     .map(bugsService::getBugEntity)
                     .forEach(bugsRepository::save);
