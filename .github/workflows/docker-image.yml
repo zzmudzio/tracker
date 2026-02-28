@@ -29,6 +29,9 @@ jobs:
       id: vars
       run: echo "tag=$(date +%s)" >> $GITHUB_OUTPUT
 
+    - name: Rename .jar file
+      run: mv target/tracker-*.jar target/tracker.jar
+
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag tracker:${{ steps.vars.outputs.tag }}
 
