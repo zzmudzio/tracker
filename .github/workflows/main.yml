@@ -34,9 +34,9 @@ jobs:
 
       - name: Rename .jar
         run: |
-          pwd
-          ls ./target/
-          mv ./target/tracker-${{ github.ref_name }}.jar ./target/tracker.jar
+          JAR=$(ls ./target/tracker-*.jar | grep -v original | head -n 1)
+          echo "Found JAR: $JAR"
+          mv "$JAR" ./target/tracker.jar
 
       # 5️⃣ Build Docker image
       - name: Build Docker image
