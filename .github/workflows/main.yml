@@ -41,8 +41,8 @@ jobs:
 
       # 5️⃣ Build Docker image
       - name: Build Docker image
-        run: docker build -t my-app:$DOCKER_TAG .
+        run: docker build -t $DOCKER_TAG .
 
       # 6️⃣ Push Docker image
       - name: Push Docker image
-        run: docker push zzmudzio/my-app:$DOCKER_TAG
+        run: docker push zzmudzio/$DOCKER_TAG
