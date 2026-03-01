@@ -33,7 +33,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Rename .jar
-        run: mv ./target/tracker-${{ github.ref_name }}.jar ./target/tracker.jar
+        run: |
+          pwd
+          ls ./target/
+          mv ./target/tracker-${{ github.ref_name }}.jar ./target/tracker.jar
 
       # 5️⃣ Build Docker image
       - name: Build Docker image
