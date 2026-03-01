@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.tracker</groupId>
     <artifactId>tracker</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <name>tracker</name>
     <description>Bug tracker</description>
     <url/>
